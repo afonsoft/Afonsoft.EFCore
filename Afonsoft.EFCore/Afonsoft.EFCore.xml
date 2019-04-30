@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Afonsoft.EFCore</name>
+    </assembly>
+    <members>
+        <member name="T:Afonsoft.EFCore.EnumSqlProvider">
+            <summary>
+            EnumSqlProvider
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.Extensions.ToEnum``1(System.String)">
+            <summary>
+            ToEnum
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Extensions.ToEnum``1(System.String,``0)">
+            <summary>
+            ToEnum
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afonsoft.EFCore.IRepository`1">
+            <summary>
+            IRepository
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="T:Afonsoft.EFCore.Repository`1">
+            <summary>
+            Base para um DbSet
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="P:Afonsoft.EFCore.Repository`1.context">
+            <summary>
+            DbContext
+            </summary>
+        </member>
+        <member name="P:Afonsoft.EFCore.Repository`1.dbSet">
+            <summary>
+            DbSet
+            </summary>
+        </member>
+        <member name="P:Afonsoft.EFCore.Repository`1.PrimaryKeyName">
+            <summary>
+            Primary Key Name
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.#ctor(Afonsoft.EFCore.RepositoryDbContext)">
+            <summary>
+            Construtor com o RepositoryDbContext
+            </summary>
+            <param name="dbContext"></param>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.Add(`0)">
+            <summary>
+            Add Element
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Add Many Element
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.Get">
+            <summary>
+            Get All Element
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.GetById(System.Int64)">
+            <summary>
+            Get Element by primaryKey
+            </summary>
+            <param name="id">key</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.Delete(`0)">
+            <summary>
+            Método que deleta um objeto no banco de dados. 
+            </summary>
+            <param name="entity">item que será deletado</param>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteById(System.Int64)">
+            <summary>
+            Método que deleta um objeto no banco de dados. 
+            </summary>
+            <param name="id">Id da primary key</param>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteRange(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary> 
+            Método que deleta um ou varios objetos no banco de dados, mediante uma expressão LINQ. 
+            </summary> 
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Delete Elements
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.Update(`0)">
+            <summary>
+            Update Element
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.UpdateById(`0,System.Int64)">
+            <summary>
+            Update Element By primaryKey
+            </summary>
+            <param name="entity">Element</param>
+            <param name="id">primaryKey</param>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.Find(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}})">
+            <summary>
+            Find Element
+            </summary>
+            <param name="filter">Filter</param>
+            <param name="orderBy">OrderBy</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:Afonsoft.EFCore.RepositoryDbContext">
+            <summary>
+            RepositoryDbContext is a base of DbContext
+            </summary>
+        </member>
+    </members>
+</doc>
