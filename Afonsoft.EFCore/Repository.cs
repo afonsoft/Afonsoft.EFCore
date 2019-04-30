@@ -38,7 +38,7 @@ namespace Afonsoft.EFCore
         /// <param name="dbContext"></param>
         public Repository(RepositoryDbContext dbContext)
         {
-            context = dbContext;
+            context = dbContext; 
             dbSet = context.Set<TEntity>();
 
             _model = context.Model;
