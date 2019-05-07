@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace Afonsoft.EFCore
 {
@@ -8,19 +10,25 @@ namespace Afonsoft.EFCore
     /// </summary>
     public class RepositoryDbContext : DbContext
     {
-        public EnumSqlProvider Provider { get; private set; }
+        /// <summary>
+        /// Provider in Use
+        /// </summary>
+        public EnumProvider Provider { get; private set; }
+        /// <summary>
+        /// ConnectionString in Use
+        /// </summary>
         public string ConnectionString { get; private set; }
 
-        private static DbContextOptions<RepositoryDbContext> GetOptions(EnumSqlProvider provider, string connectionString = null, DbContextOptions<RepositoryDbContext> dbContextOptions = null)
+        private static DbContextOptions<RepositoryDbContext> GetOptions(EnumProvider provider, string connectionString = null, DbContextOptions<RepositoryDbContext> dbContextOptions = null)
         {
-            if (string.IsNullOrEmpty(connectionString) && dbContextOptions != null)
+            if (string.IsNullOrEmpty(connectionString) && dbContextOptions != null || (provider == EnumProvider.Unknown && dbContextOptions != null))
                 return dbContextOptions;
             else
             {
-                if (string.IsNullOrEmpty(connectionString) && provider == EnumSqlProvider.SQLite)
-                    connectionString = "Data Source=SQLite.db";
+                if (string.IsNullOrEmpty(connectionString) && provider == EnumProvider.SQLite)
+                    connectionString = $"Data Source={Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SQLite.db")}"; 
 
-                if (string.IsNullOrEmpty(connectionString) && provider == EnumSqlProvider.InMemory)
+                if (string.IsNullOrEmpty(connectionString) && (provider == EnumProvider.InMemory || provider == EnumProvider.Unknown))
                     connectionString = "InMemoryDataBase";
 
                 if (string.IsNullOrEmpty(connectionString))
@@ -29,32 +37,42 @@ namespace Afonsoft.EFCore
                 DbContextOptions<RepositoryDbContext> _dbContextOptions;
                 switch (provider)
                 {
-                    case EnumSqlProvider.MySQL:
+                    case EnumProvider.MySQL:
                         _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseMySql<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseMySql<RepositoryDbContext>(connectionString).Options;
                         break;
-                    case EnumSqlProvider.SQLServer:
+                    case EnumProvider.SQLServer:
                         _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseSqlServer<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseSqlServer<RepositoryDbContext>(connectionString).Options;
 
                         break;
-                    case EnumSqlProvider.SQLite:
+                    case EnumProvider.SQLite:
                         _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseSqlite<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseSqlite<RepositoryDbContext>(connectionString).Options;
                         break;
-                    case EnumSqlProvider.PostgreSQL:
+                    case EnumProvider.PostgreSQL:
                         _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseNpgsql<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseNpgsql<RepositoryDbContext>(connectionString).Options;
                         break;
-                    case EnumSqlProvider.InMemory:
+                    case EnumProvider.InMemory:
                         _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseInMemoryDatabase<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseInMemoryDatabase<RepositoryDbContext>(connectionString).Options;
                         break;
                     default:
-                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseSqlite<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseSqlite<RepositoryDbContext>(connectionString).Options;
+                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseInMemoryDatabase<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseInMemoryDatabase<RepositoryDbContext>(connectionString).Options;
                         break;
                 }
+
                 return _dbContextOptions;
             }
         }
 
-        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options, EnumSqlProvider provider, string connectionString) : base(GetOptions(provider, connectionString, options)) { Provider = provider; ConnectionString = connectionString; }
-        public RepositoryDbContext(EnumSqlProvider provider, string connectionString = null) : base(GetOptions(provider, connectionString)) { Provider = provider; ConnectionString = connectionString; }
-        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options) : base(GetOptions(EnumSqlProvider.SQLite, "Data Source=SQLite.db", options)) { Provider = EnumSqlProvider.SQLite; ConnectionString = "Data Source=SQLite.db"; }
+        /// <summary>
+        /// Contrutor
+        /// </summary>
+        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options, EnumProvider provider, string connectionString) : base(GetOptions(provider, connectionString, options)) { Provider = provider; ConnectionString = connectionString; }
+        /// <summary>
+        /// Contrutor
+        /// </summary>
+        public RepositoryDbContext(EnumProvider provider, string connectionString = null) : base(GetOptions(provider, connectionString)) { Provider = provider; ConnectionString = connectionString; }
+        /// <summary>
+        /// Contrutor
+        /// </summary>
+        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options) : base(GetOptions(EnumProvider.Unknown, "", options)) { Provider = EnumProvider.SQLite; ConnectionString = ""; }
     }
 }

@@ -9,10 +9,10 @@ namespace ConsoleAppTest.DataBase
 {
     public class TesteDbContext : RepositoryDbContext
     {
-        public TesteDbContext(DbContextOptions<RepositoryDbContext> options, EnumSqlProvider provider, string connectionString) : base(options, provider, connectionString) { }
-        public TesteDbContext(EnumSqlProvider provider, string connectionString) : base(provider, connectionString) { }
+        public TesteDbContext(DbContextOptions<RepositoryDbContext> options, EnumProvider provider, string connectionString) : base(options, provider, connectionString) { }
+        public TesteDbContext(EnumProvider provider, string connectionString) : base(provider, connectionString) { }
 
-        public TesteDbContext(EnumSqlProvider provider) : base(provider) { }
+        public TesteDbContext(EnumProvider provider) : base(provider) { }
 
         public virtual DbSet<UserModel> Users { get; set; }
 

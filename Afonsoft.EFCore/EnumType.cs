@@ -1,9 +1,9 @@
 ﻿namespace Afonsoft.EFCore
 {
     /// <summary>
-    /// EnumSqlProvider
+    /// EnumProvider
     /// </summary>
-    public enum EnumSqlProvider
+    public enum EnumProvider
     {
         Unknown = 9999,
         MySQL = 1,

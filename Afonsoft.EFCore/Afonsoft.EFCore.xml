@@ -4,27 +4,10 @@
         <name>Afonsoft.EFCore</name>
     </assembly>
     <members>
-        <member name="T:Afonsoft.EFCore.EnumSqlProvider">
+        <member name="T:Afonsoft.EFCore.EnumProvider">
             <summary>
-            EnumSqlProvider
+            EnumProvider
             </summary>
-        </member>
-        <member name="M:Afonsoft.EFCore.Extensions.ToEnum``1(System.String)">
-            <summary>
-            ToEnum
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="value"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Afonsoft.EFCore.Extensions.ToEnum``1(System.String,``0)">
-            <summary>
-            ToEnum
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="value"></param>
-            <param name="defaultValue"></param>
-            <returns></returns>
         </member>
         <member name="T:Afonsoft.EFCore.IRepository`1">
             <summary>
@@ -133,9 +116,110 @@
             Dispose
             </summary>
         </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.AddAsync(`0)">
+            <summary>
+            Add
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.AddRangeAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            add
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.GetAsync">
+            <summary>
+            get
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.GetByIdAsync(System.Int64)">
+            <summary>
+            Get
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteAsync(`0)">
+            <summary>
+            delete
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteByIdAsync(System.Int64)">
+            <summary>
+            Delete
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteRangeAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Delete
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteRangeAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Delete
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.UpdateAsync(`0)">
+            <summary>
+            Udapte
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.UpdateByIdAsync(`0,System.Int64)">
+            <summary>
+            Update
+            </summary>
+            <param name="entity"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.FindAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}})">
+            <summary>
+            Find
+            </summary>
+            <param name="filter"></param>
+            <param name="orderBy"></param>
+            <returns></returns>
+        </member>
         <member name="T:Afonsoft.EFCore.RepositoryDbContext">
             <summary>
             RepositoryDbContext is a base of DbContext
+            </summary>
+        </member>
+        <member name="P:Afonsoft.EFCore.RepositoryDbContext.Provider">
+            <summary>
+            Provider in Use
+            </summary>
+        </member>
+        <member name="P:Afonsoft.EFCore.RepositoryDbContext.ConnectionString">
+            <summary>
+            ConnectionString in Use
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.RepositoryDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Afonsoft.EFCore.RepositoryDbContext},Afonsoft.EFCore.EnumProvider,System.String)">
+            <summary>
+            Contrutor
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.RepositoryDbContext.#ctor(Afonsoft.EFCore.EnumProvider,System.String)">
+            <summary>
+            Contrutor
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.RepositoryDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Afonsoft.EFCore.RepositoryDbContext})">
+            <summary>
+            Contrutor
             </summary>
         </member>
     </members>

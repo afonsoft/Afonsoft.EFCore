@@ -20,8 +20,8 @@ namespace ConsoleAppTest
 
         private static async void test()
         {
-            TesteDbContext dbSQLite = new TesteDbContext(Afonsoft.EFCore.EnumSqlProvider.SQLite, "Data Source=SQLite.db");
-            TesteDbContext dbInMemory = new TesteDbContext(Afonsoft.EFCore.EnumSqlProvider.InMemory);
+            TesteDbContext dbSQLite = new TesteDbContext(Afonsoft.EFCore.EnumProvider.SQLite, "Data Source=SQLite.db");
+            TesteDbContext dbInMemory = new TesteDbContext(Afonsoft.EFCore.EnumProvider.InMemory);
 
             //dbSQLite.Database.EnsureCreated();
             //dbInMemory.Database.EnsureCreated();
