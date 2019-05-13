@@ -32,7 +32,10 @@ namespace Afonsoft.EFCore
         Task<int> UpdateAsync(TEntity entity);
         void UpdateById(TEntity entity, long id);
         Task<int> UpdateByIdAsync(TEntity entity, long id);
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter = null,Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter = null,Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter,Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, int pagina = 1, int qtdRegistros = 10);
+        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, int pagina = 1, int qtdRegistros = 10);
+
     }
 }

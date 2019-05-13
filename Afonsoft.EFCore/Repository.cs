@@ -17,31 +17,32 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// DbContext
         /// </summary>
-        public RepositoryDbContext context { get; private set; }
+        public DbContext Context { get; }
+
         /// <summary>
         /// DbSet
         /// </summary>
-        public DbSet<TEntity> dbSet { get; private set; }
+        public DbSet<TEntity> DbSet { get; private set; }
 
         /// <summary>
         /// Primary Key Name
         /// </summary>
-        public string PrimaryKeyName { get; private set; }
+        public string PrimaryKeyName { get; }
 
         internal IEntityType _entityType;
         internal IEnumerable<IProperty> _properties;
         internal IModel _model;
-        
+
         /// <summary>
         /// Construtor com o RepositoryDbContext
         /// </summary>
         /// <param name="dbContext"></param>
-        public Repository(RepositoryDbContext dbContext)
+        public Repository(DbContext dbContext)
         {
-            context = dbContext; 
-            dbSet = context.Set<TEntity>();
+            Context = dbContext;
+            DbSet = Context.Set<TEntity>();
 
-            _model = context.Model;
+            _model = Context.Model;
             _entityType = _model.FindEntityType(typeof(TEntity));
             _properties = _entityType.GetProperties();
             PrimaryKeyName = _entityType.FindPrimaryKey().Properties.First().Name;
@@ -51,104 +52,100 @@ namespace Afonsoft.EFCore
         /// Add Element
         /// </summary>
         /// <param name="entity"></param>
-        public async void Add(TEntity entity)
+        public virtual async void Add(TEntity entity)
         {
-            await dbSet.AddAsync(entity);
-            await context.SaveChangesAsync();
+            await DbSet.AddAsync(entity);
+            await Context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Add Many Element
         /// </summary>
         /// <param name="entity"></param>
-        public async void AddRange(IEnumerable<TEntity> entity)
+        public virtual async void AddRange(IEnumerable<TEntity> entity)
         {
-            await dbSet.AddRangeAsync(entity);
-            await context.SaveChangesAsync();
+            await DbSet.AddRangeAsync(entity);
+            await Context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Get All Element
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<TEntity> Get()
-        {
-            return dbSet.AsNoTracking(); 
-        }
+        public virtual IEnumerable<TEntity> Get() => DbSet.AsNoTracking();
 
         /// <summary>
         /// Get Element by primaryKey
         /// </summary>
         /// <param name="id">key</param>
         /// <returns></returns>
-        public TEntity GetById(long id)
-        {
-            return (dbSet.FirstOrDefault(e => (long)e.GetType().GetProperty(PrimaryKeyName).GetValue(e) == id));
-        }
+        public virtual TEntity GetById(long id) =>
+            (DbSet.FirstOrDefault(e => (long) e.GetType().GetProperty(PrimaryKeyName).GetValue(e) == id));
 
         /// <summary>
         /// Método que deleta um objeto no banco de dados. 
         /// </summary>
         /// <param name="entity">item que será deletado</param>
-        public async void Delete(TEntity entity)
+        public virtual async void Delete(TEntity entity)
         {
-            if (context.Entry(entity).State == EntityState.Detached)
+            if (Context.Entry(entity).State == EntityState.Detached)
             {
-                dbSet.Attach(entity);
+                DbSet.Attach(entity);
             }
-            dbSet.Remove(entity);
-            await context.SaveChangesAsync();
+
+            DbSet.Remove(entity);
+            await Context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Método que deleta um objeto no banco de dados. 
         /// </summary>
         /// <param name="id">Id da primary key</param>
-        public async void DeleteById(long id)
+        public virtual async void DeleteById(long id)
         {
             var entity = GetById(id);
-            dbSet.Remove(entity);
-            await context.SaveChangesAsync();
+            if (entity == null)
+                throw new KeyNotFoundException($"Id: {id} not found");
+            DbSet.Remove(entity);
+            await Context.SaveChangesAsync();
         }
 
         /// <summary> 
         /// Método que deleta um ou varios objetos no banco de dados, mediante uma expressão LINQ. 
         /// </summary> 
-        public async void DeleteRange(Expression<Func<TEntity, bool>> filter)
+        public virtual async void DeleteRange(Expression<Func<TEntity, bool>> filter)
         {
-            IQueryable<TEntity> query = dbSet;
-            IQueryable<TEntity> deleteItens = query.Where(filter);
-            dbSet.RemoveRange(deleteItens);
-            await context.SaveChangesAsync();
+            DbSet.RemoveRange(DbSet.Where(filter));
+            await Context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Delete Elements
         /// </summary>
         /// <param name="entity"></param>
-        public async void DeleteRange(IEnumerable<TEntity> entity)
+        public virtual async void DeleteRange(IEnumerable<TEntity> entity)
         {
-            dbSet.RemoveRange(entity);
-            await context.SaveChangesAsync();
+            DbSet.RemoveRange(entity);
+            await Context.SaveChangesAsync();
         }
 
         /// <summary>
         /// Update Element
         /// </summary>
         /// <param name="entity"></param>
-        public async void Update(TEntity entity)
+        public virtual async void Update(TEntity entity)
         {
             //pegar o valor da pk do objeto
-            var entry = context.Entry(entity);
+            var entry = Context.Entry(entity);
             var pkey = entity.GetType().GetProperty(PrimaryKeyName)?.GetValue(entity);
 
             if (entry.State == EntityState.Detached)
             {
-                var set = context.Set<TEntity>();
-                TEntity attachedEntity = set.Find(pkey);  // access the key 
+                var set = Context.Set<TEntity>();
+                TEntity attachedEntity = set.Find(pkey); // access the key 
                 if (attachedEntity != null)
                 {
-                    var attachedEntry = context.Entry(attachedEntity);
+                    var attachedEntry = Context.Entry(attachedEntity);
                     attachedEntry.CurrentValues.SetValues(entity);
                 }
                 else
@@ -157,7 +154,7 @@ namespace Afonsoft.EFCore
                 }
             }
 
-            await context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -165,15 +162,15 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="entity">Element</param>
         /// <param name="id">primaryKey</param>
-        public async void UpdateById(TEntity entity, long id)
+        public virtual async void UpdateById(TEntity entity, long id)
         {
-            TEntity attachedEntity =  GetById(id);  // access the key 
+            TEntity attachedEntity = GetById(id); // access the key 
             if (attachedEntity != null)
             {
-                var attachedEntry = context.Entry(attachedEntity);
+                var attachedEntry = Context.Entry(attachedEntity);
                 attachedEntry.CurrentValues.SetValues(entity);
                 attachedEntry.State = EntityState.Modified;
-                await context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
         }
 
@@ -183,9 +180,10 @@ namespace Afonsoft.EFCore
         /// <param name="filter">Filter</param>
         /// <param name="orderBy">OrderBy</param>
         /// <returns></returns>
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
-            IQueryable<TEntity> query = dbSet;
+            IQueryable<TEntity> query = DbSet;
 
             if (filter != null)
                 query = query.Where(filter);
@@ -198,18 +196,18 @@ namespace Afonsoft.EFCore
         /// </summary>
         public void Dispose()
         {
-            dbSet = null;
-            context?.Dispose();
+            DbSet = null;
+            Context?.Dispose();
             GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// Add
         /// </summary>
-        public Task<int> AddAsync(TEntity entity)
+        public virtual Task<int> AddAsync(TEntity entity)
         {
-            dbSet.AddAsync(entity).Wait();
-            return context.SaveChangesAsync();
+            DbSet.AddAsync(entity).Wait();
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -217,44 +215,40 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<int> AddRangeAsync(IEnumerable<TEntity> entity)
+        public virtual Task<int> AddRangeAsync(IEnumerable<TEntity> entity)
         {
-           dbSet.AddRangeAsync(entity).Wait();
-            return context.SaveChangesAsync();
+            DbSet.AddRangeAsync(entity).Wait();
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
         /// get
         /// </summary>
         /// <returns></returns>
-        public Task<List<TEntity>> GetAsync()
-        {
-            return dbSet.ToListAsync();
-        }
+        public virtual Task<List<TEntity>> GetAsync() => DbSet.ToListAsync();
 
         /// <summary>
         /// Get
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<TEntity> GetByIdAsync(long id)
-        {
-            return (dbSet.FirstOrDefaultAsync(e => (long)e.GetType().GetProperty(PrimaryKeyName).GetValue(e) == id));
-        }
+        public virtual Task<TEntity> GetByIdAsync(long id) =>
+            (DbSet.FirstOrDefaultAsync(e => (long) e.GetType().GetProperty(PrimaryKeyName).GetValue(e) == id));
 
         /// <summary>
         /// delete
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<int> DeleteAsync(TEntity entity)
+        public virtual Task<int> DeleteAsync(TEntity entity)
         {
-            if (context.Entry(entity).State == EntityState.Detached)
+            if (Context.Entry(entity).State == EntityState.Detached)
             {
-                dbSet.Attach(entity);
+                DbSet.Attach(entity);
             }
-            dbSet.Remove(entity);
-            return context.SaveChangesAsync();
+
+            DbSet.Remove(entity);
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -262,11 +256,13 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<int> DeleteByIdAsync(long id)
+        public virtual Task<int> DeleteByIdAsync(long id)
         {
-            var entity =  GetById(id);
-            dbSet.Remove(entity);
-            return context.SaveChangesAsync();
+            var entity = GetById(id);
+            if (entity == null)
+                throw new KeyNotFoundException($"Id: {id} not found");
+            DbSet.Remove(entity);
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -274,12 +270,10 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> filter)
+        public virtual Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> filter)
         {
-            IQueryable<TEntity> query = dbSet;
-            IQueryable<TEntity> deleteItens = query.Where(filter);
-            dbSet.RemoveRange(deleteItens);
-            return context.SaveChangesAsync();
+            DbSet.RemoveRange(DbSet.Where(filter));
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -287,10 +281,10 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<int> DeleteRangeAsync(IEnumerable<TEntity> entity)
+        public virtual Task<int> DeleteRangeAsync(IEnumerable<TEntity> entity)
         {
-            dbSet.RemoveRange(entity);
-            return context.SaveChangesAsync();
+            DbSet.RemoveRange(entity);
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -298,18 +292,18 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public Task<int> UpdateAsync(TEntity entity)
+        public virtual Task<int> UpdateAsync(TEntity entity)
         {
-            var entry = context.Entry(entity);
+            var entry = Context.Entry(entity);
             var pkey = entity.GetType().GetProperty(PrimaryKeyName)?.GetValue(entity);
 
             if (entry.State == EntityState.Detached)
             {
-                var set = context.Set<TEntity>();
-                TEntity attachedEntity = set.Find(pkey);  // access the key 
+                var set = Context.Set<TEntity>();
+                TEntity attachedEntity = set.Find(pkey); // access the key 
                 if (attachedEntity != null)
                 {
-                    var attachedEntry = context.Entry(attachedEntity);
+                    var attachedEntry = Context.Entry(attachedEntity);
                     attachedEntry.CurrentValues.SetValues(entity);
                 }
                 else
@@ -318,7 +312,7 @@ namespace Afonsoft.EFCore
                 }
             }
 
-            return context.SaveChangesAsync();
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -327,37 +321,55 @@ namespace Afonsoft.EFCore
         /// <param name="entity"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<int> UpdateByIdAsync(TEntity entity, long id)
+        public virtual Task<int> UpdateByIdAsync(TEntity entity, long id)
         {
-            TEntity attachedEntity = GetById(id); // access the key 
-            if (attachedEntity == null)
-                attachedEntity = entity;
+            TEntity attachedEntity = GetById(id) ?? entity;
 
-            if (attachedEntity != null)
-            {
-                var attachedEntry = context.Entry(attachedEntity);
-                attachedEntry.CurrentValues.SetValues(entity);
-                attachedEntry.State = EntityState.Modified;
-            }
+            if (entity == null || attachedEntity == null)
+                throw new KeyNotFoundException($"Id: {id} not found");
 
-            return context.SaveChangesAsync();
+            var attachedEntry = Context.Entry(attachedEntity);
+            attachedEntry.CurrentValues.SetValues(entity);
+            attachedEntry.State = EntityState.Modified;
+
+            return Context.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Find
+        /// GetAsync
         /// </summary>
         /// <param name="filter"></param>
         /// <param name="orderBy"></param>
         /// <returns></returns>
-        public Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
-        {
-            IQueryable<TEntity> query = dbSet;
+        public virtual Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null) => orderBy != null
+            ? orderBy(DbSet.Where(filter)).ToListAsync()
+            : DbSet.Where(filter).ToListAsync();
 
-            if (filter != null)
-                query = query.Where(filter);
+        /// <summary>
+        /// GetPagination
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="pagina"></param>
+        /// <param name="qtdRegistros"></param>
+        /// <returns></returns>
+        public IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, 
+            int pagina = 1,
+            int qtdRegistros = 10) => DbSet.Where(filter).Skip((pagina - 1) * qtdRegistros).Take(qtdRegistros);
 
-            return orderBy != null ? orderBy(query).ToListAsync() : query.ToListAsync();
-        }
+        /// <summary>
+        /// GetPagination
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="pagina"></param>
+        /// <param name="qtdRegistros"></param>
+        /// <returns></returns>
+        public IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, 
+            int pagina = 1, 
+            int qtdRegistros = 10) =>
+            orderBy(DbSet.Where(filter).Skip((pagina - 1) * qtdRegistros).Take(qtdRegistros));
+
     }
 }
-

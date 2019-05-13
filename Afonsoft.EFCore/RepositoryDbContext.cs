@@ -13,11 +13,11 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// Provider in Use
         /// </summary>
-        public EnumProvider Provider { get; private set; }
+        public EnumProvider Provider { get; }
         /// <summary>
         /// ConnectionString in Use
         /// </summary>
-        public string ConnectionString { get; private set; }
+        public string ConnectionString { get; }
 
         private static DbContextOptions<RepositoryDbContext> GetOptions(EnumProvider provider, string connectionString = null, DbContextOptions<RepositoryDbContext> dbContextOptions = null)
         {
@@ -73,6 +73,6 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// Contrutor
         /// </summary>
-        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options) : base(GetOptions(EnumProvider.Unknown, "", options)) { Provider = EnumProvider.SQLite; ConnectionString = ""; }
+        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options) : base(GetOptions(EnumProvider.InMemory, "", options)) { Provider = EnumProvider.InMemory; ConnectionString = ""; }
     }
 }

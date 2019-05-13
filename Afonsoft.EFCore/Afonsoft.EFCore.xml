@@ -21,12 +21,12 @@
             </summary>
             <typeparam name="TEntity"></typeparam>
         </member>
-        <member name="P:Afonsoft.EFCore.Repository`1.context">
+        <member name="P:Afonsoft.EFCore.Repository`1.Context">
             <summary>
             DbContext
             </summary>
         </member>
-        <member name="P:Afonsoft.EFCore.Repository`1.dbSet">
+        <member name="P:Afonsoft.EFCore.Repository`1.DbSet">
             <summary>
             DbSet
             </summary>
@@ -36,7 +36,7 @@
             Primary Key Name
             </summary>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.#ctor(Afonsoft.EFCore.RepositoryDbContext)">
+        <member name="M:Afonsoft.EFCore.Repository`1.#ctor(Microsoft.EntityFrameworkCore.DbContext)">
             <summary>
             Construtor com o RepositoryDbContext
             </summary>
@@ -103,7 +103,7 @@
             <param name="entity">Element</param>
             <param name="id">primaryKey</param>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.Find(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}})">
+        <member name="M:Afonsoft.EFCore.Repository`1.Get(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}})">
             <summary>
             Find Element
             </summary>
@@ -184,12 +184,31 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.FindAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}})">
+        <member name="M:Afonsoft.EFCore.Repository`1.GetAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}})">
             <summary>
-            Find
+            GetAsync
             </summary>
             <param name="filter"></param>
             <param name="orderBy"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.GetPagination(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32)">
+            <summary>
+            GetPagination
+            </summary>
+            <param name="filter"></param>
+            <param name="pagina"></param>
+            <param name="qtdRegistros"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.Repository`1.GetPagination(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}},System.Int32,System.Int32)">
+            <summary>
+            GetPagination
+            </summary>
+            <param name="filter"></param>
+            <param name="orderBy"></param>
+            <param name="pagina"></param>
+            <param name="qtdRegistros"></param>
             <returns></returns>
         </member>
         <member name="T:Afonsoft.EFCore.RepositoryDbContext">
