@@ -18,7 +18,7 @@ namespace ConsoleAppTest
             Console.ReadKey();
         }
 
-        private static async void test()
+        private static void test()
         {
             TesteDbContext dbSQLite = new TesteDbContext(Afonsoft.EFCore.EnumProvider.SQLite, "Data Source=SQLite.db");
             TesteDbContext dbInMemory = new TesteDbContext(Afonsoft.EFCore.EnumProvider.InMemory);

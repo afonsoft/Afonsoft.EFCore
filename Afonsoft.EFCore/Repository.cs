@@ -142,7 +142,7 @@ namespace Afonsoft.EFCore
             if (entry.State == EntityState.Detached)
             {
                 var set = Context.Set<TEntity>();
-                TEntity attachedEntity = set.Find(pkey); // access the key 
+                TEntity attachedEntity = set.Find(pkey); 
                 if (attachedEntity != null)
                 {
                     var attachedEntry = Context.Entry(attachedEntity);
@@ -150,8 +150,12 @@ namespace Afonsoft.EFCore
                 }
                 else
                 {
-                    entry.State = EntityState.Modified; // attach the entity 
+                    entry.State = EntityState.Modified; 
                 }
+            }
+            else
+            {
+                entry.State = EntityState.Modified;
             }
 
             await Context.SaveChangesAsync();
@@ -311,6 +315,10 @@ namespace Afonsoft.EFCore
                     entry.State = EntityState.Modified; // attach the entity 
                 }
             }
+            else
+            {
+                entry.State = EntityState.Modified;
+            }
 
             return Context.SaveChangesAsync();
         }
@@ -358,6 +366,10 @@ namespace Afonsoft.EFCore
                         entry.State = EntityState.Modified; // attach the entity 
                     }
                 }
+                else
+                {
+                    entry.State = EntityState.Modified;
+                }
             }
             return Context.SaveChangesAsync();
         }
@@ -384,6 +396,10 @@ namespace Afonsoft.EFCore
                     {
                         entry.State = EntityState.Modified; // attach the entity 
                     }
+                }
+                else
+                {
+                    entry.State = EntityState.Modified;
                 }
             }
             await Context.SaveChangesAsync();
