@@ -79,8 +79,8 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="id">key</param>
         /// <returns></returns>
-        public virtual TEntity GetById(long id) =>
-            (DbSet.FirstOrDefault(e => (long) e.GetType().GetProperty(PrimaryKeyName).GetValue(e) == id));
+        public virtual TEntity GetById(int id) =>
+            (DbSet.FirstOrDefault(e => (int) e.GetType().GetProperty(PrimaryKeyName).GetValue(e) == id));
 
         /// <summary>
         /// Método que deleta um objeto no banco de dados. 
@@ -101,7 +101,7 @@ namespace Afonsoft.EFCore
         /// Método que deleta um objeto no banco de dados. 
         /// </summary>
         /// <param name="id">Id da primary key</param>
-        public virtual async void DeleteById(long id)
+        public virtual async void DeleteById(int id)
         {
             var entity = GetById(id);
             if (entity == null)
@@ -162,7 +162,7 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="entity">Element</param>
         /// <param name="id">primaryKey</param>
-        public virtual async void UpdateById(TEntity entity, long id)
+        public virtual async void UpdateById(TEntity entity, int id)
         {
             TEntity attachedEntity = GetById(id); // access the key 
             if (attachedEntity != null)
@@ -232,8 +232,8 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual Task<TEntity> GetByIdAsync(long id) =>
-            (DbSet.FirstOrDefaultAsync(e => (long) e.GetType().GetProperty(PrimaryKeyName).GetValue(e) == id));
+        public virtual Task<TEntity> GetByIdAsync(int id) =>
+            (DbSet.FirstOrDefaultAsync(e => (int) e.GetType().GetProperty(PrimaryKeyName).GetValue(e) == id));
 
         /// <summary>
         /// delete
@@ -256,7 +256,7 @@ namespace Afonsoft.EFCore
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual Task<int> DeleteByIdAsync(long id)
+        public virtual Task<int> DeleteByIdAsync(int id)
         {
             var entity = GetById(id);
             if (entity == null)
@@ -321,7 +321,7 @@ namespace Afonsoft.EFCore
         /// <param name="entity"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual Task<int> UpdateByIdAsync(TEntity entity, long id)
+        public virtual Task<int> UpdateByIdAsync(TEntity entity, int id)
         {
             TEntity attachedEntity = GetById(id) ?? entity;
 
@@ -333,6 +333,60 @@ namespace Afonsoft.EFCore
             attachedEntry.State = EntityState.Modified;
 
             return Context.SaveChangesAsync();
+        }
+        /// <summary>
+        /// UpdateRangeAsync
+        /// </summary>
+        public virtual Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            foreach (TEntity entity in DbSet.Where(filter))
+            {
+                var entry = Context.Entry(entity);
+                var pkey = entity.GetType().GetProperty(PrimaryKeyName)?.GetValue(entity);
+
+                if (entry.State == EntityState.Detached)
+                {
+                    var set = Context.Set<TEntity>();
+                    TEntity attachedEntity = set.Find(pkey); // access the key 
+                    if (attachedEntity != null)
+                    {
+                        var attachedEntry = Context.Entry(attachedEntity);
+                        attachedEntry.CurrentValues.SetValues(entity);
+                    }
+                    else
+                    {
+                        entry.State = EntityState.Modified; // attach the entity 
+                    }
+                }
+            }
+            return Context.SaveChangesAsync();
+        }
+        /// <summary>
+        /// UpdateRange
+        /// </summary>
+        public virtual async void UpdateRange(Expression<Func<TEntity, bool>> filter)
+        {
+            foreach (TEntity entity in DbSet.Where(filter))
+            {
+                var entry = Context.Entry(entity);
+                var pkey = entity.GetType().GetProperty(PrimaryKeyName)?.GetValue(entity);
+
+                if (entry.State == EntityState.Detached)
+                {
+                    var set = Context.Set<TEntity>();
+                    TEntity attachedEntity = set.Find(pkey); // access the key 
+                    if (attachedEntity != null)
+                    {
+                        var attachedEntry = Context.Entry(attachedEntity);
+                        attachedEntry.CurrentValues.SetValues(entity);
+                    }
+                    else
+                    {
+                        entry.State = EntityState.Modified; // attach the entity 
+                    }
+                }
+            }
+            await Context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -350,26 +404,25 @@ namespace Afonsoft.EFCore
         /// GetPagination
         /// </summary>
         /// <param name="filter"></param>
-        /// <param name="pagina"></param>
-        /// <param name="qtdRegistros"></param>
+        /// <param name="page"></param>
+        /// <param name="count"></param>
         /// <returns></returns>
         public IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, 
-            int pagina = 1,
-            int qtdRegistros = 10) => DbSet.Where(filter).Skip((pagina - 1) * qtdRegistros).Take(qtdRegistros);
+            int page = 1,
+            int count = 10) => DbSet.Where(filter).Skip((page - 1) * count).Take(count);
 
         /// <summary>
         /// GetPagination
         /// </summary>
         /// <param name="filter"></param>
         /// <param name="orderBy"></param>
-        /// <param name="pagina"></param>
-        /// <param name="qtdRegistros"></param>
+        /// <param name="page"></param>
+        /// <param name="count"></param>
         /// <returns></returns>
         public IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, 
-            int pagina = 1, 
-            int qtdRegistros = 10) =>
-            orderBy(DbSet.Where(filter).Skip((pagina - 1) * qtdRegistros).Take(qtdRegistros));
-
+            int page = 1, 
+            int count = 10) =>
+            orderBy(DbSet.Where(filter)).Skip((page - 1) * count).Take(count);
     }
 }

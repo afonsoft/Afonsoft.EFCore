@@ -12,30 +12,118 @@ namespace Afonsoft.EFCore
     /// <typeparam name="TEntity"></typeparam>
     public interface IRepository<TEntity> where TEntity : class
     {
+        /// <summary>
+        /// Add
+        /// </summary>
         void Add(TEntity entity);
+        /// <summary>
+        /// Add Async
+        /// </summary>
+        /// <returns></returns>
         Task<int> AddAsync(TEntity entity);
+        /// <summary>
+        /// Add Range
+        /// </summary>
         void AddRange(IEnumerable<TEntity> entity);
+        /// <summary>
+        /// Add Range Async
+        /// </summary>
         Task<int> AddRangeAsync(IEnumerable<TEntity> entity);
+        /// <summary>
+        /// Get
+        /// </summary>
         IEnumerable<TEntity> Get();
+        /// <summary>
+        /// Get Async
+        /// </summary>
         Task<List<TEntity>> GetAsync();
-        TEntity GetById(long id);
-        Task<TEntity> GetByIdAsync(long id);
+        /// <summary>
+        /// Get By Id (Primary Key)
+        /// </summary>
+        /// <param name="id">(Primary Key)</param>
+        TEntity GetById(int id);
+        /// <summary>
+        /// Get By Id (Primary Key)
+        /// </summary>
+        /// <param name="id">(Primary Key)</param>
+        Task<TEntity> GetByIdAsync(int id);
+        /// <summary>
+        /// Delete
+        /// </summary>
         void Delete(TEntity entity);
+        /// <summary>
+        /// Delete Async
+        /// </summary>
         Task<int> DeleteAsync(TEntity entity);
-        void DeleteById(long id);
-        Task<int> DeleteByIdAsync(long id);
+        /// <summary>
+        /// Delete By Id (Primary Key)
+        /// </summary>
+        void DeleteById(int id);
+        /// <summary>
+        /// Delete By Id (Primary Key)
+        /// </summary>
+        Task<int> DeleteByIdAsync(int id);
+        /// <summary>
+        /// Delete Range
+        /// </summary>
         void DeleteRange(Expression<Func<TEntity, bool>> filter);
+        /// <summary>
+        /// Delete Range Async
+        /// </summary>
         Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> filter);
+        /// <summary>
+        /// Delete Range
+        /// </summary>
         void DeleteRange(IEnumerable<TEntity> entity);
+        /// <summary>
+        /// Delete Range Async
+        /// </summary>
         Task<int> DeleteRangeAsync(IEnumerable<TEntity> entity);
+        /// <summary>
+        /// Update
+        /// </summary>
         void Update(TEntity entity);
+        /// <summary>
+        /// UpdateRangeAsync
+        /// </summary>
+        Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> filter);
+        /// <summary>
+        /// UpdateRange
+        /// </summary>
+        void UpdateRange(Expression<Func<TEntity, bool>> filter);
+        /// <summary>
+        /// Update Async
+        /// </summary>
         Task<int> UpdateAsync(TEntity entity);
-        void UpdateById(TEntity entity, long id);
-        Task<int> UpdateByIdAsync(TEntity entity, long id);
+        /// <summary>
+        /// Update by Id (Primary Key)
+        /// </summary>
+        /// <param name="id">(Primary Key)</param>
+        void UpdateById(TEntity entity, int id);
+        /// <summary>
+        /// Update by Id (Primary Key)
+        /// </summary>
+        /// <param name="id">(Primary Key)</param>
+        Task<int> UpdateByIdAsync(TEntity entity, int id);
+        /// <summary>
+        /// Get
+        /// </summary>
         IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter,Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        /// <summary>
+        /// Get Async
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="orderBy"></param>
+        /// <returns></returns>
         Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
-        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, int pagina = 1, int qtdRegistros = 10);
-        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, int pagina = 1, int qtdRegistros = 10);
+        /// <summary>
+        /// GetPagination
+        /// </summary>
+        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, int page = 1, int count = 10);
+        /// <summary>
+        /// GetPagination
+        /// </summary>
+        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, int page = 1, int count = 10);
 
     }
 }
