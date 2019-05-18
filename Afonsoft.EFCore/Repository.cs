@@ -22,7 +22,7 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// DbSet
         /// </summary>
-        public DbSet<TEntity> DbSet { get; private set; }
+        public virtual DbSet<TEntity> DbSet { get; private set; }
 
         /// <summary>
         /// Primary Key Name
@@ -36,10 +36,10 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// Construtor com o RepositoryDbContext
         /// </summary>
-        /// <param name="dbContext"></param>
-        public Repository(DbContext dbContext)
+        /// <param name="context"></param>
+        public Repository(DbContext context)
         {
-            Context = dbContext;
+            Context = context;
             DbSet = Context.Set<TEntity>();
 
             _model = Context.Model;
@@ -72,7 +72,7 @@ namespace Afonsoft.EFCore
         /// Get All Element
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<TEntity> Get() => DbSet.AsNoTracking();
+        public virtual IEnumerable<TEntity> Get() => DbSet.AsNoTracking().AsEnumerable();
 
         /// <summary>
         /// Get Element by primaryKey
@@ -185,16 +185,8 @@ namespace Afonsoft.EFCore
         /// <param name="orderBy">OrderBy</param>
         /// <returns></returns>
         public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
-        {
-            IQueryable<TEntity> query = DbSet;
-
-            if (filter != null)
-                query = query.Where(filter);
-
-            return orderBy != null ? orderBy(query) : query;
-        }
-
+             Expression<Func<TEntity, object>> orderBy = null) => orderBy != null ? DbSet.OrderBy(orderBy).Where(filter) : DbSet.Where(filter); 
+        
         /// <summary>
         /// Dispose
         /// </summary>
@@ -412,8 +404,8 @@ namespace Afonsoft.EFCore
         /// <param name="orderBy"></param>
         /// <returns></returns>
         public virtual Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null) => orderBy != null
-            ? orderBy(DbSet.Where(filter)).ToListAsync()
+             Expression<Func<TEntity, object>> orderBy = null) => orderBy != null
+            ? DbSet.OrderBy(orderBy).Where(filter).ToListAsync()
             : DbSet.Where(filter).ToListAsync();
 
         /// <summary>
@@ -436,9 +428,9 @@ namespace Afonsoft.EFCore
         /// <param name="count"></param>
         /// <returns></returns>
         public IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, 
+             Expression<Func<TEntity, object>> orderBy, 
             int page = 1, 
             int count = 10) =>
-            orderBy(DbSet.Where(filter)).Skip((page - 1) * count).Take(count);
+            DbSet.OrderBy(orderBy).Where(filter).Skip((page - 1) * count).Take(count);
     }
 }

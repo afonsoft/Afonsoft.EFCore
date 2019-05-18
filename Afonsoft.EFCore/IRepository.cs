@@ -108,14 +108,14 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// Get
         /// </summary>
-        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter,Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> orderBy = null);
         /// <summary>
         /// Get Async
         /// </summary>
         /// <param name="filter"></param>
         /// <param name="orderBy"></param>
         /// <returns></returns>
-        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null);
+        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> orderBy = null);
         /// <summary>
         /// GetPagination
         /// </summary>
@@ -123,7 +123,7 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// GetPagination
         /// </summary>
-        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, int page = 1, int count = 10);
+        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> orderBy, int page = 1, int count = 10);
 
     }
 }

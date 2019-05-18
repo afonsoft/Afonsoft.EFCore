@@ -63,13 +63,28 @@ namespace Afonsoft.EFCore
         }
 
         /// <summary>
-        /// Contrutor
+        /// Database.EnsureCreated with try/catch
         /// </summary>
-        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options, EnumProvider provider, string connectionString) : base(GetOptions(provider, connectionString, options)) { Provider = provider; ConnectionString = connectionString; }
+        public virtual bool EnsureCreated()
+        {
+            try
+            {
+                return Database.EnsureCreated();
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Contrutor
         /// </summary>
-        public RepositoryDbContext(EnumProvider provider, string connectionString = null) : base(GetOptions(provider, connectionString)) { Provider = provider; ConnectionString = connectionString; }
+        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options, EnumProvider provider, string connectionString) : base(GetOptions(provider, connectionString, options)) { Provider = provider; ConnectionString = connectionString; EnsureCreated(); }
+        /// <summary>
+        /// Contrutor
+        /// </summary>
+        public RepositoryDbContext(EnumProvider provider, string connectionString = null) : base(GetOptions(provider, connectionString)) { Provider = provider; ConnectionString = connectionString; EnsureCreated(); }
         /// <summary>
         /// Contrutor
         /// </summary>

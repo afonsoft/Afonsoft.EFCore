@@ -23,8 +23,8 @@ namespace ConsoleAppTest
             TesteDbContext dbSQLite = new TesteDbContext(Afonsoft.EFCore.EnumProvider.SQLite, "Data Source=SQLite.db");
             TesteDbContext dbInMemory = new TesteDbContext(Afonsoft.EFCore.EnumProvider.InMemory);
 
-            //dbSQLite.Database.EnsureCreated();
-            //dbInMemory.Database.EnsureCreated();
+            dbSQLite.EnsureCreated();
+            //dbInMemory.EnsureCreated();
             
 
             Repository<UserModel> users1 = new Repository<UserModel>(dbSQLite);
