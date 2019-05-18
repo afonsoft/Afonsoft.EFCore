@@ -69,7 +69,7 @@ namespace Afonsoft.EFCore
         {
             try
             {
-                return Database.EnsureCreated();
+                return Database.EnsureCreated(); 
             }
             catch
             {

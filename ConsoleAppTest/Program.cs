@@ -54,6 +54,22 @@ namespace ConsoleAppTest
                 users2.Add(new UserModel() { Id = 1, Nome = "Afonso" });
                 users2.Add(new UserModel() { Id = 2, Nome = "Marcelo" });
             }
+
+
+            var item1 = users1.Get(x => x.Id == 1, x => x.Nome).FirstOrDefault();
+
+
+            if (item1 != null)
+            {
+                Console.WriteLine(item1.Nome);
+                item1.Nome = "Afonso 1";
+                users1.Update(item1);
+                var all = users1.Get().ToList();
+                if(all!= null)
+                {
+                    Console.WriteLine(all[0].Nome);
+                }
+            }
         }
     }
 }
