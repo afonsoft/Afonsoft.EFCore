@@ -9,8 +9,8 @@ namespace Afonsoft.EFCore
     /// <summary>
     /// IRepository
     /// </summary>
-    /// <typeparam name="TEntity"></typeparam>
-    public interface IRepository<TEntity> where TEntity : class
+    /// <typeparam name="TEntity">TEntity</typeparam>
+    public interface IRepository<TEntity> where TEntity : class 
     {
         /// <summary>
         /// Add
@@ -84,14 +84,6 @@ namespace Afonsoft.EFCore
         /// </summary>
         void Update(TEntity entity);
         /// <summary>
-        /// UpdateRangeAsync
-        /// </summary>
-        Task<int> UpdateRangeAsync(Expression<Func<TEntity, bool>> filter);
-        /// <summary>
-        /// UpdateRange
-        /// </summary>
-        void UpdateRange(Expression<Func<TEntity, bool>> filter);
-        /// <summary>
         /// Update Async
         /// </summary>
         Task<int> UpdateAsync(TEntity entity);
@@ -99,11 +91,13 @@ namespace Afonsoft.EFCore
         /// Update by Id (Primary Key)
         /// </summary>
         /// <param name="id">(Primary Key)</param>
+        /// <param name="entity">TEntity</param>
         void UpdateById(TEntity entity, int id);
         /// <summary>
         /// Update by Id (Primary Key)
         /// </summary>
         /// <param name="id">(Primary Key)</param>
+        /// <param name="entity">TEntity</param>
         Task<int> UpdateByIdAsync(TEntity entity, int id);
         /// <summary>
         /// Get
@@ -119,11 +113,12 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// GetPagination
         /// </summary>
-        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, int page = 1, int count = 10);
+        IEnumerable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, int page = 1, int count = 10);
         /// <summary>
         /// GetPagination
         /// </summary>
-        IQueryable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> orderBy, int page = 1, int count = 10);
+        IEnumerable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, object>> orderBy, int page = 1, int count = 10);
+       
 
     }
 }

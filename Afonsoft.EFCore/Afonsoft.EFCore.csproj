@@ -10,12 +10,13 @@
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>http://www.afonsoft.com.br</PackageProjectUrl>
-    <AssemblyVersion>2019.5.13</AssemblyVersion>
-    <FileVersion>2019.5.13</FileVersion>
-    <Version>2019.5.13</Version>
+    <AssemblyVersion>2019.5.18</AssemblyVersion>
+    <FileVersion>2019.5.18</FileVersion>
+    <Version>2019.5.18</Version>
     <RepositoryUrl>https://github.com/afonsoft/Afonsoft.EFCore</RepositoryUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/Apache-2.0</PackageLicenseUrl>
     <Description>EFCore, Core, Entity, Framework, Entity Framework, Entity Framework Core</Description>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">

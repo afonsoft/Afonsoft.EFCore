@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using Afonsoft.EFCore;
-
+using System.Collections.Generic;
 
 namespace ConsoleAppTest
 {
@@ -18,58 +18,39 @@ namespace ConsoleAppTest
             Console.ReadKey();
         }
 
-        private static void test()
+        private async static void test()
         {
             TesteDbContext dbSQLite = new TesteDbContext(Afonsoft.EFCore.EnumProvider.SQLite, "Data Source=SQLite.db");
             TesteDbContext dbInMemory = new TesteDbContext(Afonsoft.EFCore.EnumProvider.InMemory);
 
             dbSQLite.EnsureCreated();
             //dbInMemory.EnsureCreated();
-            
 
-            Repository<UserModel> users1 = new Repository<UserModel>(dbSQLite);
 
-            Repository<UserModel> users2 = new Repository<UserModel>(dbInMemory);
+            Repository<UserModel> users = new Repository<UserModel>(dbSQLite);
+            //Repository<UserModel> users = new Repository<UserModel>(dbInMemory);
 
-            var all2 = users2.Get().ToList();
-            var all1= users1.Get().ToList();
-            
+            var all1 = users.Get().ToList();
 
-            if (all1.Any())
+
+            if (!all1.Any())
             {
-                var item = all1.FirstOrDefault(x => x.Id == 1);
-            }
-            else
-            {
-                users1.Add(new UserModel() { Id = 1, Nome = "Afonso" });
-                users1.Add(new UserModel() { Id = 2, Nome = "Marcelo" });
-            }
-
-            if (all2.Any())
-            {
-                var item = all2.FirstOrDefault(x => x.Id == 1);
-            }
-            else
-            {
-                users2.Add(new UserModel() { Id = 1, Nome = "Afonso" });
-                users2.Add(new UserModel() { Id = 2, Nome = "Marcelo" });
-            }
-
-
-            var item1 = users1.Get(x => x.Id == 1, x => x.Nome).FirstOrDefault();
-
-
-            if (item1 != null)
-            {
-                Console.WriteLine(item1.Nome);
-                item1.Nome = "Afonso 1";
-                users1.Update(item1);
-                var all = users1.Get().ToList();
-                if(all!= null)
+                IList<UserModel> usrs = new List<UserModel>();
+                for (int i = 1; i <= 5000; i++)
                 {
-                    Console.WriteLine(all[0].Nome);
+                    usrs.Add(new UserModel() { Id = i, Nome = $"Afonso {i}" });
                 }
+                await users.AddRangeAsync(usrs);
             }
+        
+            
+            var page= users.GetPagination(x => x.Nome.Contains("Afon"), x => x.Nome, 2, 100).ToList();
+
+            if (page.Any())
+            {
+                
+            }
+
         }
     }
 }
