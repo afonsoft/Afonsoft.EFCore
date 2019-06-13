@@ -9,17 +9,177 @@
             EnumProvider
             </summary>
         </member>
+        <member name="F:Afonsoft.EFCore.EnumProvider.Unknown">
+            <summary>
+            Unknown
+            </summary>
+        </member>
+        <member name="F:Afonsoft.EFCore.EnumProvider.MySQL">
+            <summary>
+            MySQL
+            </summary>
+        </member>
+        <member name="F:Afonsoft.EFCore.EnumProvider.SQLite">
+            <summary>
+            SQLite
+            </summary>
+        </member>
+        <member name="F:Afonsoft.EFCore.EnumProvider.SQLServer">
+            <summary>
+            SQLServer
+            </summary>
+        </member>
+        <member name="F:Afonsoft.EFCore.EnumProvider.PostgreSQL">
+            <summary>
+            PostgreSQL
+            </summary>
+        </member>
+        <member name="F:Afonsoft.EFCore.EnumProvider.InMemory">
+            <summary>
+            InMemory
+            </summary>
+        </member>
         <member name="T:Afonsoft.EFCore.IRepository`1">
             <summary>
             IRepository
             </summary>
-            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TEntity">TEntity</typeparam>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.Add(`0)">
+            <summary>
+            Add
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.AddAsync(`0)">
+            <summary>
+            Add Async
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Add Range
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.AddRangeAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Add Range Async
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.Get">
+            <summary>
+            Get
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.GetAsync">
+            <summary>
+            Get Async
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.GetById(System.Int32)">
+            <summary>
+            Get By Id (Primary Key)
+            </summary>
+            <param name="id">(Primary Key)</param>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.GetByIdAsync(System.Int32)">
+            <summary>
+            Get By Id (Primary Key)
+            </summary>
+            <param name="id">(Primary Key)</param>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.Delete(`0)">
+            <summary>
+            Delete
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.DeleteAsync(`0)">
+            <summary>
+            Delete Async
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.DeleteById(System.Int32)">
+            <summary>
+            Delete By Id (Primary Key)
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.DeleteByIdAsync(System.Int32)">
+            <summary>
+            Delete By Id (Primary Key)
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.DeleteRange(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Delete Range
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.DeleteRangeAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Delete Range Async
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.DeleteRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Delete Range
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.DeleteRangeAsync(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Delete Range Async
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.Update(`0)">
+            <summary>
+            Update
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.UpdateAsync(`0)">
+            <summary>
+            Update Async
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.UpdateById(`0,System.Int32)">
+            <summary>
+            Update by Id (Primary Key)
+            </summary>
+            <param name="id">(Primary Key)</param>
+            <param name="entity">TEntity</param>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.UpdateByIdAsync(`0,System.Int32)">
+            <summary>
+            Update by Id (Primary Key)
+            </summary>
+            <param name="id">(Primary Key)</param>
+            <param name="entity">TEntity</param>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.Get(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Get
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.GetAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Get Async
+            </summary>
+            <param name="filter"></param>
+            <param name="orderBy"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.GetPagination(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32)">
+            <summary>
+            GetPagination
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.IRepository`1.GetPagination(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,System.Int32)">
+            <summary>
+            GetPagination
+            </summary>
         </member>
         <member name="T:Afonsoft.EFCore.Repository`1">
             <summary>
             Base para um DbSet
             </summary>
-            <typeparam name="TEntity"></typeparam>
+            <typeparam name="TEntity">TEntity</typeparam>
         </member>
         <member name="P:Afonsoft.EFCore.Repository`1.Context">
             <summary>
@@ -40,7 +200,7 @@
             <summary>
             Construtor com o RepositoryDbContext
             </summary>
-            <param name="dbContext"></param>
+            <param name="context"></param>
         </member>
         <member name="M:Afonsoft.EFCore.Repository`1.Add(`0)">
             <summary>
@@ -60,7 +220,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.GetById(System.Int64)">
+        <member name="M:Afonsoft.EFCore.Repository`1.GetById(System.Int32)">
             <summary>
             Get Element by primaryKey
             </summary>
@@ -73,7 +233,7 @@
             </summary>
             <param name="entity">item que será deletado</param>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.DeleteById(System.Int64)">
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteById(System.Int32)">
             <summary>
             Método que deleta um objeto no banco de dados. 
             </summary>
@@ -96,14 +256,14 @@
             </summary>
             <param name="entity"></param>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.UpdateById(`0,System.Int64)">
+        <member name="M:Afonsoft.EFCore.Repository`1.UpdateById(`0,System.Int32)">
             <summary>
             Update Element By primaryKey
             </summary>
             <param name="entity">Element</param>
             <param name="id">primaryKey</param>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.Get(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}})">
+        <member name="M:Afonsoft.EFCore.Repository`1.Get(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
             Find Element
             </summary>
@@ -134,7 +294,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.GetByIdAsync(System.Int64)">
+        <member name="M:Afonsoft.EFCore.Repository`1.GetByIdAsync(System.Int32)">
             <summary>
             Get
             </summary>
@@ -148,7 +308,7 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.DeleteByIdAsync(System.Int64)">
+        <member name="M:Afonsoft.EFCore.Repository`1.DeleteByIdAsync(System.Int32)">
             <summary>
             Delete
             </summary>
@@ -176,7 +336,7 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.UpdateByIdAsync(`0,System.Int64)">
+        <member name="M:Afonsoft.EFCore.Repository`1.UpdateByIdAsync(`0,System.Int32)">
             <summary>
             Update
             </summary>
@@ -184,7 +344,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.GetAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}})">
+        <member name="M:Afonsoft.EFCore.Repository`1.GetAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
             GetAsync
             </summary>
@@ -197,18 +357,18 @@
             GetPagination
             </summary>
             <param name="filter"></param>
-            <param name="pagina"></param>
-            <param name="qtdRegistros"></param>
+            <param name="page"></param>
+            <param name="count"></param>
             <returns></returns>
         </member>
-        <member name="M:Afonsoft.EFCore.Repository`1.GetPagination(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Linq.IQueryable{`0},System.Linq.IOrderedQueryable{`0}},System.Int32,System.Int32)">
+        <member name="M:Afonsoft.EFCore.Repository`1.GetPagination(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Int32,System.Int32)">
             <summary>
             GetPagination
             </summary>
             <param name="filter"></param>
             <param name="orderBy"></param>
-            <param name="pagina"></param>
-            <param name="qtdRegistros"></param>
+            <param name="page"></param>
+            <param name="count"></param>
             <returns></returns>
         </member>
         <member name="T:Afonsoft.EFCore.RepositoryDbContext">
@@ -224,6 +384,11 @@
         <member name="P:Afonsoft.EFCore.RepositoryDbContext.ConnectionString">
             <summary>
             ConnectionString in Use
+            </summary>
+        </member>
+        <member name="M:Afonsoft.EFCore.RepositoryDbContext.EnsureCreated">
+            <summary>
+            Database.EnsureCreated with try/catch
             </summary>
         </member>
         <member name="M:Afonsoft.EFCore.RepositoryDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Afonsoft.EFCore.RepositoryDbContext},Afonsoft.EFCore.EnumProvider,System.String)">
