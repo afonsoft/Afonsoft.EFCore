@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.0;Net47</TargetFrameworks>
     <Authors>Afonso Dutra Nogueira Filho</Authors>
     <Company>Afonsoft</Company>
     <Copyright>afonsoft</Copyright>
@@ -10,13 +10,14 @@
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>http://www.afonsoft.com.br</PackageProjectUrl>
-    <AssemblyVersion>2019.5.18</AssemblyVersion>
-    <FileVersion>2019.5.18</FileVersion>
-    <Version>2019.5.18</Version>
+    <AssemblyVersion>2019.7.12</AssemblyVersion>
+    <FileVersion>2019.7.12</FileVersion>
+    <Version>2019.7.12</Version>
     <RepositoryUrl>https://github.com/afonsoft/Afonsoft.EFCore</RepositoryUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/Apache-2.0</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <Description>EFCore, Core, Entity, Framework, Entity Framework, Entity Framework Core</Description>
     <LangVersion>default</LangVersion>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
