@@ -7,12 +7,11 @@ using System.Text;
 
 namespace ConsoleAppTest.DataBase
 {
-    public class TesteDbContext : RepositoryDbContext
+    public class AppDbContext : RepositoryDbContext
     {
-        public TesteDbContext(DbContextOptions<RepositoryDbContext> options, EnumProvider provider, string connectionString) : base(options, provider, connectionString) { }
-        public TesteDbContext(EnumProvider provider, string connectionString) : base(provider, connectionString) { }
-
-        public TesteDbContext(EnumProvider provider) : base(provider) { }
+        public AppDbContext(Action<AfonsoftEFOptions> configure) : base(configure)
+        {
+        }
 
         public virtual DbSet<UserModel> Users { get; set; }
 

@@ -20,35 +20,39 @@ namespace ConsoleAppTest
 
         private async static void test()
         {
-            TesteDbContext dbSQLite = new TesteDbContext(Afonsoft.EFCore.EnumProvider.SQLite, "Data Source=SQLite.db");
-            TesteDbContext dbInMemory = new TesteDbContext(Afonsoft.EFCore.EnumProvider.InMemory);
+            //Afonsoft.EFCore.EnumProvider.SQLite, "Data Source=SQLite.db"
+            AppDbContext dbSQLite = new AppDbContext(c => { c.Provider = EnumProvider.SQLite; c.ConnectionString = "Data Source=SQLite.db"; });
+            AppDbContext dbInMemory = new AppDbContext(c => c.Provider = EnumProvider.InMemory);
 
             dbSQLite.EnsureCreated();
-            //dbInMemory.EnsureCreated();
+            dbInMemory.EnsureCreated();
 
 
-            Repository<UserModel> users = new Repository<UserModel>(dbSQLite);
-            //Repository<UserModel> users = new Repository<UserModel>(dbInMemory);
+            Repository<UserModel> usersSql = new Repository<UserModel>(dbSQLite);
+            Repository<UserModel> usersMemory = new Repository<UserModel>(dbInMemory);
 
-            var all1 = users.Get().ToList();
+            var all1 = usersSql.Get().ToList();
 
+            IList<UserModel> usrs = new List<UserModel>();
+            for (int i = 1; i <= 5000; i++)
+            {
+                usrs.Add(new UserModel() { Id = i, Nome = $"Afonso {i}" });
+            }
+
+            await usersMemory.AddRangeAsync(usrs);
 
             if (!all1.Any())
             {
-                IList<UserModel> usrs = new List<UserModel>();
-                for (int i = 1; i <= 5000; i++)
-                {
-                    usrs.Add(new UserModel() { Id = i, Nome = $"Afonso {i}" });
-                }
-                await users.AddRangeAsync(usrs);
+                await usersSql.AddRangeAsync(usrs);
+
             }
-        
-            
-            var page= users.GetPagination(x => x.Nome.Contains("Afon"), x => x.Nome, 2, 100).ToList();
+
+
+            var page = usersSql.GetPagination(x => x.Nome.Contains("Afon"), x => x.Nome, 2, 100).ToList();
 
             if (page.Any())
             {
-                
+
             }
 
         }

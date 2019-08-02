@@ -10,14 +10,6 @@ namespace Afonsoft.EFCore
     /// </summary>
     public class RepositoryDbContext : DbContext
     {
-        /// <summary>
-        /// Provider in Use
-        /// </summary>
-        public EnumProvider Provider { get; }
-        /// <summary>
-        /// ConnectionString in Use
-        /// </summary>
-        public string ConnectionString { get; }
 
         private static DbContextOptions<RepositoryDbContext> GetOptions(EnumProvider provider, string connectionString = null, DbContextOptions<RepositoryDbContext> dbContextOptions = null)
         {
@@ -80,14 +72,14 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// Contrutor
         /// </summary>
-        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options, EnumProvider provider, string connectionString) : base(GetOptions(provider, connectionString, options)) { Provider = provider; ConnectionString = connectionString; EnsureCreated(); }
-        /// <summary>
-        /// Contrutor
-        /// </summary>
-        public RepositoryDbContext(EnumProvider provider, string connectionString = null) : base(GetOptions(provider, connectionString)) { Provider = provider; ConnectionString = connectionString; EnsureCreated(); }
-        /// <summary>
-        /// Contrutor
-        /// </summary>
-        public RepositoryDbContext(DbContextOptions<RepositoryDbContext> options) : base(GetOptions(EnumProvider.InMemory, "", options)) { Provider = EnumProvider.InMemory; ConnectionString = ""; }
+        public RepositoryDbContext(Action<AfonsoftEFOptions> configure) : base(Build(configure)) { EnsureCreated(); }
+   
+        private static DbContextOptions<RepositoryDbContext> Build(Action<AfonsoftEFOptions> configure)
+        {
+            var opt = new AfonsoftEFOptions();
+            configure(opt);
+            return GetOptions(opt.Provider, opt.ConnectionString, opt.DbOptions);
+        }
+
     }
 }
