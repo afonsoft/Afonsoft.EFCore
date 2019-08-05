@@ -8,10 +8,10 @@ namespace Afonsoft.EFCore
     /// <summary>
     /// RepositoryDbContext is a base of DbContext
     /// </summary>
-    public class RepositoryDbContext : DbContext
+    public class AfonsoftDbContext : DbContext
     {
 
-        private static DbContextOptions<RepositoryDbContext> GetOptions(EnumProvider provider, string connectionString = null, DbContextOptions<RepositoryDbContext> dbContextOptions = null)
+        private static DbContextOptions<AfonsoftDbContext> GetOptions(EnumProvider provider, string connectionString = null, DbContextOptions<AfonsoftDbContext> dbContextOptions = null)
         {
             if (string.IsNullOrEmpty(connectionString) && dbContextOptions != null || (provider == EnumProvider.Unknown && dbContextOptions != null))
                 return dbContextOptions;
@@ -26,27 +26,27 @@ namespace Afonsoft.EFCore
                 if (string.IsNullOrEmpty(connectionString))
                     throw new ArgumentNullException(nameof(connectionString), "Não existe uma conexão.");
 
-                DbContextOptions<RepositoryDbContext> _dbContextOptions;
+                DbContextOptions<AfonsoftDbContext> _dbContextOptions;
                 switch (provider)
                 {
                     case EnumProvider.MySQL:
-                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseMySql<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseMySql<RepositoryDbContext>(connectionString).Options;
+                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<AfonsoftDbContext>(dbContextOptions).UseMySql<AfonsoftDbContext>(connectionString).Options : new DbContextOptionsBuilder<AfonsoftDbContext>().UseMySql<AfonsoftDbContext>(connectionString).Options;
                         break;
                     case EnumProvider.SQLServer:
-                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseSqlServer<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseSqlServer<RepositoryDbContext>(connectionString).Options;
+                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<AfonsoftDbContext>(dbContextOptions).UseSqlServer<AfonsoftDbContext>(connectionString).Options : new DbContextOptionsBuilder<AfonsoftDbContext>().UseSqlServer<AfonsoftDbContext>(connectionString).Options;
 
                         break;
                     case EnumProvider.SQLite:
-                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseSqlite<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseSqlite<RepositoryDbContext>(connectionString).Options;
+                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<AfonsoftDbContext>(dbContextOptions).UseSqlite<AfonsoftDbContext>(connectionString).Options : new DbContextOptionsBuilder<AfonsoftDbContext>().UseSqlite<AfonsoftDbContext>(connectionString).Options;
                         break;
                     case EnumProvider.PostgreSQL:
-                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseNpgsql<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseNpgsql<RepositoryDbContext>(connectionString).Options;
+                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<AfonsoftDbContext>(dbContextOptions).UseNpgsql<AfonsoftDbContext>(connectionString).Options : new DbContextOptionsBuilder<AfonsoftDbContext>().UseNpgsql<AfonsoftDbContext>(connectionString).Options;
                         break;
                     case EnumProvider.InMemory:
-                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseInMemoryDatabase<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseInMemoryDatabase<RepositoryDbContext>(connectionString).Options;
+                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<AfonsoftDbContext>(dbContextOptions).UseInMemoryDatabase<AfonsoftDbContext>(connectionString).Options : new DbContextOptionsBuilder<AfonsoftDbContext>().UseInMemoryDatabase<AfonsoftDbContext>(connectionString).Options;
                         break;
                     default:
-                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<RepositoryDbContext>(dbContextOptions).UseInMemoryDatabase<RepositoryDbContext>(connectionString).Options : new DbContextOptionsBuilder<RepositoryDbContext>().UseInMemoryDatabase<RepositoryDbContext>(connectionString).Options;
+                        _dbContextOptions = dbContextOptions != null ? new DbContextOptionsBuilder<AfonsoftDbContext>(dbContextOptions).UseInMemoryDatabase<AfonsoftDbContext>(connectionString).Options : new DbContextOptionsBuilder<AfonsoftDbContext>().UseInMemoryDatabase<AfonsoftDbContext>(connectionString).Options;
                         break;
                 }
 
@@ -72,9 +72,9 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// Contrutor
         /// </summary>
-        public RepositoryDbContext(Action<AfonsoftEFOptions> configure) : base(Build(configure)) { EnsureCreated(); }
+        public AfonsoftDbContext(Action<AfonsoftEFOptions> configure) : base(Build(configure)) { EnsureCreated(); }
    
-        private static DbContextOptions<RepositoryDbContext> Build(Action<AfonsoftEFOptions> configure)
+        private static DbContextOptions<AfonsoftDbContext> Build(Action<AfonsoftEFOptions> configure)
         {
             var opt = new AfonsoftEFOptions();
             configure(opt);

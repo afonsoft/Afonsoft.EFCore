@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ConsoleAppTest.DataBase
 {
-    public class AppDbContext : RepositoryDbContext
+    public class AppDbContext : AfonsoftDbContext
     {
         public AppDbContext(Action<AfonsoftEFOptions> configure) : base(configure)
         {

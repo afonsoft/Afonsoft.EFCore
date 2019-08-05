@@ -10,9 +10,9 @@
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>http://www.afonsoft.com.br</PackageProjectUrl>
-    <AssemblyVersion>2019.8.2</AssemblyVersion>
-    <FileVersion>2019.8.2</FileVersion>
-    <Version>2019.8.2</Version>
+    <AssemblyVersion>2019.8.5</AssemblyVersion>
+    <FileVersion>2019.8.5</FileVersion>
+    <Version>2019.8.5</Version>
     <RepositoryUrl>https://github.com/afonsoft/Afonsoft.EFCore</RepositoryUrl>
     <PackageLicenseUrl></PackageLicenseUrl>
     <Description>EFCore, Core, Entity, Framework, Entity Framework, Entity Framework Core</Description>
