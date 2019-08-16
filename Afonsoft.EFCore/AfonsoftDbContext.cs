@@ -74,8 +74,11 @@ namespace Afonsoft.EFCore
         /// </summary>
         public AfonsoftDbContext(Action<AfonsoftEFOptions> configure) : base(Build(configure)) { EnsureCreated(); }
    
-        private static DbContextOptions<AfonsoftDbContext> Build(Action<AfonsoftEFOptions> configure)
+        private static DbContextOptions<AfonsoftDbContext> Build(Action<AfonsoftEFOptions> configure = null)
         {
+            if (configure == null)
+                return null;
+
             var opt = new AfonsoftEFOptions();
             configure(opt);
             return GetOptions(opt.Provider, opt.ConnectionString, opt.DbOptions);
