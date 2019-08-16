@@ -81,7 +81,7 @@ namespace Afonsoft.EFCore
 
             var opt = new AfonsoftEFOptions();
             configure(opt);
-            return GetOptions(opt.Provider, opt.ConnectionString, opt.DbOptions);
+            return GetOptions(opt.Provider, opt.ConnectionString, opt.Options);
         }
 
     }

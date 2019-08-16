@@ -11,7 +11,8 @@ namespace Afonsoft.EFCore
         /// <summary>
         /// DbContextOptions
         /// </summary>
-        public DbContextOptions<AfonsoftDbContext> DbOptions { get; set; }
+        public DbContextOptions<AfonsoftDbContext> Options { get; set; }
+
         /// <summary>
         /// Provider
         /// </summary>
