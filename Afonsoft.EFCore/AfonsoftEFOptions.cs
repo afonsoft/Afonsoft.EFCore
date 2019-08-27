@@ -6,12 +6,12 @@ using System.Text;
 
 namespace Afonsoft.EFCore
 {
-    public class AfonsoftEFOptions : IOptions<AfonsoftEFOptions>
+    public class AfonsoftEFOptions : IOptions<AfonsoftEFOptions> 
     {
         /// <summary>
         /// DbContextOptions
         /// </summary>
-        public DbContextOptions<AfonsoftDbContext> Options { get; set; }
+        public DbContextOptions<DbContext> Options { get; set; }
 
         /// <summary>
         /// Provider

@@ -27,8 +27,10 @@ namespace Afonsoft.EFCore
             {
                 var opt = AfonsoftDbContext.BuildOptions(optionsAction);
                 services.AddSingleton<AfonsoftEFOptions>(opt);
-                services.AddSingleton<DbContextOptions<AfonsoftDbContext>>(opt.Options);
+                services.AddSingleton<DbContextOptions<DbContext>>(opt.Options);
                 services.AddSingleton<DbContextOptions>(opt.Options);
+                services.AddSingleton(typeof(TContext), typeof(TContext));
+                services.Configure(optionsAction);
                 services.AddDbContext<TContext>();
             }
 
