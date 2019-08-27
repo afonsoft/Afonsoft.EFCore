@@ -69,6 +69,20 @@ namespace Afonsoft.EFCore
             }
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (optionsBuilder.IsConfigured)
+            {
+
+            }
+        }
+
+        public AfonsoftDbContext(DbContextOptions<AfonsoftDbContext> options) : base(options) {
+            var opt = new AfonsoftEFOptions();
+            opt.Options = options;
+            EnsureCreated();
+        }
+    
         /// <summary>
         /// Contrutor
         /// </summary>
@@ -82,6 +96,15 @@ namespace Afonsoft.EFCore
             var opt = new AfonsoftEFOptions();
             configure(opt);
             return GetOptions(opt.Provider, opt.ConnectionString, opt.Options);
+        }
+        internal static AfonsoftEFOptions BuildOptions(Action<AfonsoftEFOptions> configure = null)
+        {
+            if (configure == null)
+                return null;
+
+            var opt = new AfonsoftEFOptions();
+            configure(opt);
+            return opt;
         }
 
     }
