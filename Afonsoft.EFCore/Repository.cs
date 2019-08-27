@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Afonsoft.EFCore
 {
@@ -20,9 +20,9 @@ namespace Afonsoft.EFCore
         protected DbContext Context { get; }
 
         /// <summary>
-        /// DbSet
+        /// DbSet of the Table
         /// </summary>
-        protected DbSet<TEntity> DbSet { get; private set; }
+        public DbSet<TEntity> Table { get; private set; }
 
         /// <summary>
         /// Primary Key Name
@@ -39,12 +39,17 @@ namespace Afonsoft.EFCore
         public Repository(DbContext context)
         {
             Context = context;
-            DbSet = Context.Set<TEntity>();
+            Table = Context.Set<TEntity>();
 
             _model = Context.Model;
             _entityType = _model.FindEntityType(typeof(TEntity));
             _properties = _entityType.GetProperties();
             PrimaryKeyName = _entityType.FindPrimaryKey().Properties.First().Name;
+        }
+
+        private Repository()
+        {
+            
         }
 
         /// <summary>
@@ -53,7 +58,7 @@ namespace Afonsoft.EFCore
         /// <param name="entity"></param>
         public virtual async void Add(TEntity entity)
         {
-            await DbSet.AddAsync(entity);
+            await Table.AddAsync(entity);
             await Context.SaveChangesAsync();
         }
 
@@ -63,7 +68,7 @@ namespace Afonsoft.EFCore
         /// <param name="entity"></param>
         public virtual async void AddRange(IEnumerable<TEntity> entity)
         {
-            await DbSet.AddRangeAsync(entity);
+            await Table.AddRangeAsync(entity);
             await Context.SaveChangesAsync();
         }
 
@@ -71,14 +76,14 @@ namespace Afonsoft.EFCore
         /// Get All Element
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<TEntity> Get() => DbSet.AsNoTracking().AsEnumerable();
+        public virtual IEnumerable<TEntity> Get() => Table.AsNoTracking().AsEnumerable();
 
         /// <summary>
         /// Get Element by primaryKey
         /// </summary>
         /// <param name="id">key</param>
         /// <returns></returns>
-        public virtual TEntity GetById(int id) => DbSet.FirstOrDefault(e => id.Equals((int)e.GetType().GetProperty(PrimaryKeyName).GetValue(e)));
+        public virtual TEntity GetById(int id) => Table.FirstOrDefault(e => id.Equals((int)e.GetType().GetProperty(PrimaryKeyName).GetValue(e)));
 
 
         /// <summary>
@@ -89,10 +94,10 @@ namespace Afonsoft.EFCore
         {
             if (Context.Entry(entity).State == EntityState.Detached)
             {
-                DbSet.Attach(entity);
+                Table.Attach(entity);
             }
 
-            DbSet.Remove(entity);
+            Table.Remove(entity);
             await Context.SaveChangesAsync();
         }
 
@@ -106,7 +111,7 @@ namespace Afonsoft.EFCore
             var entity = GetById(id);
             if (entity == null)
                 throw new KeyNotFoundException($"Id: {id} not found");
-            DbSet.Remove(entity);
+            Table.Remove(entity);
             await Context.SaveChangesAsync();
         }
 
@@ -115,7 +120,7 @@ namespace Afonsoft.EFCore
         /// </summary> 
         public virtual async void DeleteRange(Expression<Func<TEntity, bool>> filter)
         {
-            DbSet.RemoveRange(DbSet.Where(filter));
+            Table.RemoveRange(Table.Where(filter));
             await Context.SaveChangesAsync();
         }
 
@@ -125,7 +130,7 @@ namespace Afonsoft.EFCore
         /// <param name="entity"></param>
         public virtual async void DeleteRange(IEnumerable<TEntity> entity)
         {
-            DbSet.RemoveRange(entity);
+            Table.RemoveRange(entity);
             await Context.SaveChangesAsync();
         }
 
@@ -186,14 +191,14 @@ namespace Afonsoft.EFCore
         /// <param name="orderBy">OrderBy</param>
         /// <returns></returns>
         public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter,
-             Expression<Func<TEntity, object>> orderBy = null) => orderBy != null ? DbSet.OrderBy(orderBy).Where(filter) : DbSet.Where(filter);
+             Expression<Func<TEntity, object>> orderBy = null) => orderBy != null ? Table.OrderBy(orderBy).Where(filter) : Table.Where(filter);
 
         /// <summary>
         /// Dispose
         /// </summary>
         public void Dispose()
         {
-            DbSet = null;
+            Table = null;
             Context?.Dispose();
             GC.SuppressFinalize(this);
         }
@@ -203,7 +208,7 @@ namespace Afonsoft.EFCore
         /// </summary>
         public virtual Task<int> AddAsync(TEntity entity)
         {
-            DbSet.AddAsync(entity).Wait();
+            Table.AddAsync(entity).Wait();
             return Context.SaveChangesAsync();
         }
 
@@ -214,7 +219,7 @@ namespace Afonsoft.EFCore
         /// <returns></returns>
         public virtual Task<int> AddRangeAsync(IEnumerable<TEntity> entity)
         {
-            DbSet.AddRangeAsync(entity).Wait();
+            Table.AddRangeAsync(entity).Wait();
             return Context.SaveChangesAsync();
         }
 
@@ -222,14 +227,14 @@ namespace Afonsoft.EFCore
         /// get
         /// </summary>
         /// <returns></returns>
-        public virtual Task<List<TEntity>> GetAsync() => DbSet.AsNoTracking().ToListAsync();
+        public virtual Task<List<TEntity>> GetAsync() => Table.AsNoTracking().ToListAsync();
 
         /// <summary>
         /// Get
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual Task<TEntity> GetByIdAsync(int id) => DbSet.FirstOrDefaultAsync(e => id.Equals((int)e.GetType().GetProperty(PrimaryKeyName).GetValue(e)));
+        public virtual Task<TEntity> GetByIdAsync(int id) => Table.FirstOrDefaultAsync(e => id.Equals((int)e.GetType().GetProperty(PrimaryKeyName).GetValue(e)));
 
         /// <summary>
         /// delete
@@ -240,10 +245,10 @@ namespace Afonsoft.EFCore
         {
             if (Context.Entry(entity).State == EntityState.Detached)
             {
-                DbSet.Attach(entity);
+                Table.Attach(entity);
             }
 
-            DbSet.Remove(entity);
+            Table.Remove(entity);
             return Context.SaveChangesAsync();
         }
 
@@ -258,7 +263,7 @@ namespace Afonsoft.EFCore
             var entity = GetById(id);
             if (entity == null)
                 throw new KeyNotFoundException($"Id: {id} not found");
-            DbSet.Remove(entity);
+            Table.Remove(entity);
             return Context.SaveChangesAsync();
         }
 
@@ -269,7 +274,7 @@ namespace Afonsoft.EFCore
         /// <returns></returns>
         public virtual Task<int> DeleteRangeAsync(Expression<Func<TEntity, bool>> filter)
         {
-            DbSet.RemoveRange(DbSet.Where(filter));
+            Table.RemoveRange(Table.Where(filter));
             return Context.SaveChangesAsync();
         }
 
@@ -280,7 +285,7 @@ namespace Afonsoft.EFCore
         /// <returns></returns>
         public virtual Task<int> DeleteRangeAsync(IEnumerable<TEntity> entity)
         {
-            DbSet.RemoveRange(entity);
+            Table.RemoveRange(entity);
             return Context.SaveChangesAsync();
         }
 
@@ -345,8 +350,8 @@ namespace Afonsoft.EFCore
         /// <returns></returns>
         public virtual Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter,
              Expression<Func<TEntity, object>> orderBy = null) => orderBy != null
-            ? DbSet.OrderBy(orderBy).Where(filter).ToListAsync()
-            : DbSet.Where(filter).ToListAsync();
+            ? Table.OrderBy(orderBy).Where(filter).ToListAsync()
+            : Table.Where(filter).ToListAsync();
 
         /// <summary>
         /// GetPagination
@@ -357,7 +362,7 @@ namespace Afonsoft.EFCore
         /// <returns></returns>
         public IEnumerable<TEntity> GetPagination(Expression<Func<TEntity, bool>> filter,
             int page = 1,
-            int count = 10) => DbSet.AsNoTracking()
+            int count = 10) => Table.AsNoTracking()
             .Where(filter)
             .Skip((page - 1) * count)
             .Take(count)
@@ -375,7 +380,7 @@ namespace Afonsoft.EFCore
              Expression<Func<TEntity, object>> orderBy,
             int page = 1,
             int count = 10) =>
-            DbSet.AsNoTracking()
+            Table.AsNoTracking()
             .OrderBy(orderBy)
             .Where(filter)
             .Skip((page - 1) * count)
