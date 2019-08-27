@@ -15,6 +15,7 @@ namespace WebApplicationTest.Controllers
         {
             _context = context;
             _context.Users.Add(new TestUser() { Id = _context.Users.Count() + 1, Name = "Afonso" });
+            _context.SaveChanges();
         }
         public IActionResult Index()
         {
