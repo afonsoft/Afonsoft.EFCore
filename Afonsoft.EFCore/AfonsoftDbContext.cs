@@ -18,7 +18,7 @@ namespace Afonsoft.EFCore
             else
             {
                 if (string.IsNullOrEmpty(connectionString) && provider == EnumProvider.SQLite)
-                    connectionString = $"Data Source={Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SQLite.db")}"; 
+                    connectionString = $"Data Source={Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SQLite.db")}";
 
                 if (string.IsNullOrEmpty(connectionString) && (provider == EnumProvider.InMemory || provider == EnumProvider.Unknown))
                     connectionString = "InMemoryDataBase";
@@ -61,7 +61,7 @@ namespace Afonsoft.EFCore
         {
             try
             {
-                return Database.EnsureCreated(); 
+                return Database.EnsureCreated();
             }
             catch
             {
@@ -77,17 +77,18 @@ namespace Afonsoft.EFCore
             }
         }
 
-        public AfonsoftDbContext(DbContextOptions<AfonsoftDbContext> options) : base(options) {
+        public AfonsoftDbContext(DbContextOptions<AfonsoftDbContext> options) : base(options)
+        {
             var opt = new AfonsoftEFOptions();
             opt.Options = options;
             EnsureCreated();
         }
-    
+
         /// <summary>
         /// Contrutor
         /// </summary>
         public AfonsoftDbContext(Action<AfonsoftEFOptions> configure) : base(Build(configure)) { EnsureCreated(); }
-   
+
         private static DbContextOptions<AfonsoftDbContext> Build(Action<AfonsoftEFOptions> configure = null)
         {
             if (configure == null)
@@ -95,7 +96,8 @@ namespace Afonsoft.EFCore
 
             var opt = new AfonsoftEFOptions();
             configure(opt);
-            return GetOptions(opt.Provider, opt.ConnectionString, opt.Options);
+            opt.Options = GetOptions(opt.Provider, opt.ConnectionString, opt.Options);
+            return opt.Options;
         }
         internal static AfonsoftEFOptions BuildOptions(Action<AfonsoftEFOptions> configure = null)
         {
@@ -104,8 +106,8 @@ namespace Afonsoft.EFCore
 
             var opt = new AfonsoftEFOptions();
             configure(opt);
+            opt.Options = GetOptions(opt.Provider, opt.ConnectionString, opt.Options);
             return opt;
         }
-
     }
 }
